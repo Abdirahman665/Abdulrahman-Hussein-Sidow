@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Expense Tracker</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 400px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        #message {
+            margin: 10px 0;
+            color: red;
+        }
+
+        li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Expense Tracker</h1>
+
+        <form id="expenseForm">
+            <input type="text" id="expenseName" placeholder="Expense Name">
+            <input type="number" id="expenseAmount" placeholder="Amount">
+            <button type="submit">Add Expense</button>
+        </form>
+
+        <p id="message"></p>
+
+        <ul id="expenseList"></ul>
+
+        <h3>Total: $<span id="totalAmount">0</span></h3>
+    </div>
+
+    <script>
+        const expenseForm = document.getElementById("expenseForm");
+        const expenseName = document.getElementById("expenseName");
+        const expenseAmount = document.getElementById("expenseAmount");
+        const expenseList = document.getElementById("expenseList");
+        const totalAmount = document.getElementById("totalAmount");
+        const message = document.getElementById("message");
+
+        let expenses = [];
+
+        expenseForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const name = expenseName.value.trim();
+            const amount = Number(expenseAmount.value);
+
+            if (name === "" || amount <= 0) {
+                message.textContent = "Please enter valid expense name and amount.";
+                return;
+            }
+
+            message.textContent = "";
+
+            const expense = {
+                name: name,
+                amount: amount
+            };
+
+            expenses.push(expense);
+
+            updateUI();
+
+            expenseName.value = "";
+            expenseAmount.value = "";
+        });
+
+        function updateUI() {
+            expenseList.innerHTML = "";
+
+            let total = 0;
+
+            expenses.forEach(function (expense) {
+                const li = document.createElement("li");
+                li.textContent = `${expense.name} - $${expense.amount}`;
+                expenseList.appendChild(li);
+
+                total += expense.amount;
+            });
+
+            totalAmount.textContent = total;
+        }
+    </script>
+
+</body>
+</html>
